@@ -13,7 +13,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "deploy": "npm run build && scp -r ./build/* generalovpn@51.250.89.111:/home/generalovpn/frontend/movies-explorer-frontend"
   },
   "eslintConfig": {
     "extends": [
