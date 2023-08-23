@@ -1,15 +1,35 @@
-import { checkResponse } from "./MainApi";
+class MoviesApi {
+  constructor(options) {
+    this._url = options.url;
+  }
 
-function request(option) {
-  return fetch(`https://api.nomoreparties.co/beatfilm-movies`, option).then(
-    checkResponse
-  );
+  _checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+  }
+
+  _fetch(path, method, data) {
+    let body = data;
+    if ((method === 'PATCH' || method === 'POST') && data) {
+      body = JSON.stringify(data);
+    }
+
+    return fetch(this._url + path, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body,
+    }).then(this._checkResponse);
+  }
+
+  getMovies() {
+    return this._fetch('/beatfilm-movies', 'GET');
+  }
 }
 
-export function getMoviesList() {
-  return request({
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(),
-  });
-}
+export const moviesApi = new MoviesApi({
+  url: 'https://api.nomoreparties.co',
+});

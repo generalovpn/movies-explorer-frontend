@@ -1,124 +1,148 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useContext, useEffect } from "react";
-import { useFormWithValidation } from "../../hooks/useFormWithValidation";
-import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import { updateUserInfo } from "../../utils/MainApi";
-import handleError from "../../utils/handleError";
-import { NAME_ERROR, EMAIL_ERROR } from "../../utils/constants";
+import React, { useState, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { CurrentUserContext } from '../../CurrentUserContext/CurrentUserContext';
+import './Profile.css';
+import Header from '../Header/Header';
+import validator from 'validator';
 
-function Profile({ handleLogout, setCurrentUser }) {
-  const [isDisabled, setDisabled] = useState(true);
-  const { values, setValues, handleChange, isValid, errors, setErrors } =
-    useFormWithValidation();
-
+function Profile(props) {
   const currentUser = useContext(CurrentUserContext);
+  const [name, setName] = useState(currentUser.name || '');
+  const [email, setEmail] = useState(currentUser.email || '');
+  const [originalName, setOriginalName] = useState(currentUser.name || '');
+  const [originalEmail, setOriginalEmail] = useState(currentUser.email || '');
+  const [hasChanges, setHasChanges] = useState(false);
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [formErrors, setFormErrors] = useState({name: '', email: ''});
+
+  const isFormValid = () => {
+    return (
+      formErrors.name === '' && formErrors.email === ''
+    );
+  };
+
+  const handleInputChange = (evt) => {
+    const { name, value } = evt.target;
+
+    if (name === 'name') {
+      setName(value);
+    } else if (name === 'email') {
+      setEmail(value);
+    }
+
+    validateField(name, value);
+    setHasChanges((name === 'name' && value !== originalName) || (name === 'email' && value !== originalEmail));
+  };
+
+  const handleUpdateClick = async (evt) => {
+    evt.preventDefault();
+    if (hasChanges && isFormValid() && !isSubmitting) {
+      setIsSubmitting(true); 
+      try {
+        await props.onUpdateUser({ name, email });
+        setOriginalName(name);
+        setOriginalEmail(email);
+        setHasChanges(false);
+        setUpdateSuccess(true);
+        
+        setTimeout(() => {
+          setUpdateSuccess(false);
+        }, 3000); 
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsSubmitting(false);
+      }
+    }
+  };
+
+  const validateField = (fieldName, value) => {
+    let errorMessage = '';
+
+    switch (fieldName) {
+      case 'name':
+        if (value.length < 2) {
+          errorMessage = 'Имя должно содержать не менее двух символов';
+        } else if (!validator.matches(value, /^[A-Za-zА-Яа-яЁё\s-]{2,30}$/)) {
+          errorMessage = 'Имя должно содержать только латиницу, кириллицу, пробел или дефис';
+        }
+        break;
+      case 'email':
+        if (value.length < 6) {
+          errorMessage = 'Email должен содержать от 6 до 30 символов';
+        } else if (!validator.isEmail(value)) {
+          errorMessage = 'Введите корректный email';
+        }
+        break;
+      default:
+        break;
+    }
+
+    setFormErrors({
+      ...formErrors,
+      [fieldName]: errorMessage,
+    });
+  };
 
   useEffect(() => {
-    setValues(currentUser);
+    setName(currentUser.name || '');
+    setEmail(currentUser.email || '');
+    setOriginalName(currentUser.name || '');
+    setOriginalEmail(currentUser.email || '');
   }, [currentUser]);
 
-  // Вставка данных в инпуты
-  useEffect(() => {
-    if (
-      values.name === currentUser.name &&
-      values.email === currentUser.email
-    ) {
-      setDisabled(true);
-    } else {
-      setDisabled(false);
-    }
-  }, [values, currentUser]);
-
-  // Сабмит формы профиля для обновления
-  function handleSubmit(evt) {
-    evt.preventDefault();
-    setDisabled(true);
-
-    updateUserInfo({ name: values.name, email: values.email })
-      .then((res) => {
-        setCurrentUser({ name: res.name, email: res.email, _id: res._id });
-        setErrors({});
-        alert("Данные изменены");
-      })
-      .catch((err) => {
-        handleError(err);
-        setValues(currentUser);
-      })
-      .finally(() => {
-        setDisabled(false);
-      });
-  }
-
   return (
-    <main>
-      <section className="profile">
-        <h1 className="profile__title">Привет, {currentUser.name}!</h1>
-        <form onSubmit={handleSubmit} noValidate>
-          <ul className="profile__list">
-            <li className="profile__item">
-              <label className="profile__item-name" htmlFor="name">
-                Имя
-              </label>
-              <input
-                className="profile__item-text"
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Имя"
-                required
-                minLength={2}
-                maxLength={30}
-                pattern="[a-zA-Zа-яА-Я\-\s]+"
-                value={values.name || ""}
-                onChange={handleChange}
+    <>
+      <Header isLoggedIn={props.isLoggedIn}/>
+      <main className='profile'>
+        <section className='profile__container'>
+          <h1 className='profile__name'>Привет, {currentUser.name || 'пользователь'}!</h1>
+          <form className='profile__form'>
+            <label className='profile__label-name'>Имя
+              <input 
+                className='profile__input' 
+                name='name' 
+                type='text' 
+                placeholder='Имя' 
+                required 
+                value={name}
+                onChange={handleInputChange}
               />
-              <span className="profile__item-error">
-                {errors.name ? NAME_ERROR : ""}
-              </span>
-            </li>
-            <li className="profile__item">
-              <label className="profile__item-name" htmlFor="email">
-                E-mail
-              </label>
-              <input
-                className="profile__item-text"
-                type="email"
-                id="email"
-                name="email"
-                placeholder="e@mail.ee"
-                required
-                pattern="\S+@\S+\.\S{2,}"
-                value={values.email || ""}
-                onChange={handleChange}
+              <p className={`${formErrors.name ? 'profile__input-error' : ''}`}>{formErrors.name}</p>
+            </label>
+            <label className='profile__label-email'>E-mail
+              <input 
+                className='profile__input' 
+                name='email' 
+                type='email' 
+                placeholder='E-mail' 
+                required 
+                value={email}
+                onChange={handleInputChange}
               />
-              <span className="profile__item-error">
-                {errors.email ? EMAIL_ERROR : ""}
-              </span>
-            </li>
-          </ul>
-
-          <button
-            type="submit"
-            className={`profile__button ${
-              isDisabled || !isValid
-                ? "profile__button_disabled"
-                : "profile__button_active link-hover"
-            }`}
-            disabled={isDisabled || !isValid}
-          >
-            Редактировать
-          </button>
-        </form>
-        <Link
-          to="/"
-          className="profile__button profile__button_warning-color link-hover"
-          onClick={handleLogout}
-        >
-          Выйти из аккаунта
-        </Link>
-      </section>
-    </main>
+              <p className={`${formErrors.email ? 'profile__input-error' : ''}`}>{formErrors.email}</p>
+            </label>
+            <div className='profile__align'>
+              {props.error && <p className='profile__error-message'>{props.error}</p>}
+              {updateSuccess && !props.error && (
+                <p className='profile__update-success'>Данные успешно обновлены!</p>
+              )}
+              <button 
+                className={`profile__btn-edit ${!hasChanges || !isFormValid() ? 'profile__btn-edit_disabled' : ''}`} 
+                type='button' 
+                onClick={handleUpdateClick}
+                disabled={!hasChanges || !isFormValid()}
+              >
+                Редактировать
+              </button>
+              <Link to="/" className='profile__btn-exit' onClick={props.onSignOut}>Выйти из аккаунта</Link>
+            </div>
+          </form>
+        </section>
+      </main>
+    </>
   );
 }
 

@@ -1,31 +1,18 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import './Footer.css';
 
 function Footer() {
   return (
     <footer className="footer">
-      <h2 className="footer__title">
-        Учебный проект Яндекс.Практикум х BeatFilm.
-      </h2>
-      <div className="footer__container">
-        <p className="footer__copyright">© 2023</p>
-        <ul className="footer__links">
-          <li>
-            <Link
-              className="footer__link link-hover"
-              to="https://practicum.yandex.ru/"
-            >
-              Яндекс.Практикум
-            </Link>
+      <p className="footer__text">Учебный проект Яндекс.Практикум х BeatFilm.</p>
+      <div className="footer__align">
+        <p className="footer__copyright">&#169; {new Date().getFullYear()}</p>
+        <ul className="footer__list">
+          <li className="footer__item">
+            <a className="footer__link" href="https://practicum.yandex.ru/" target='_blank' rel='noreferrer'>Яндекс.Практикум</a>
           </li>
-
-          <li>
-            <Link
-              className="footer__link link-hover"
-              to="https://github.com/generalovpn"
-            >
-              Github
-            </Link>
+          <li className="footer__item">
+            <a className="footer__link" href="https://github.com/generalovpn" target='_blank' rel='noreferrer'>Github</a>
           </li>
         </ul>
       </div>
