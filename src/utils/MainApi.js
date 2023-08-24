@@ -48,6 +48,5 @@ class MainApi {
 }
 
 export const mainApi = new MainApi({
-  // url: `http://localhost:3000`,
-  url: `https://api.movies.generalovpn.nomoreparties.sbs`,
+  url: `http://api.movies.generalovpn.nomoreparties.sbs`,
 });
