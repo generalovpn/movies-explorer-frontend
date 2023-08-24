@@ -1,4 +1,6 @@
 .portfolio {
+  max-width: 1280px;
+  margin: 0 auto;
   box-sizing: border-box;
   width: 100%;
   padding: 0 70px 125px;
@@ -55,7 +57,7 @@
   .portfolio {
     padding: 0 50px 10px;
   }
-  
+
   .portfolio__link {
     font-size: 28px;
   }
