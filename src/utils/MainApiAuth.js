@@ -44,7 +44,7 @@ class MainApiAuth {
 }
 
 export const mainApiAuth = new MainApiAuth({
-  baseUrl: `http://api.movies.generalovpn.nomoreparties.sbs`,
+  baseUrl: `https://api.movies.generalovpn.nomoreparties.sbs`,
   headers: {
     'Content-Type': 'application/json',
   },
