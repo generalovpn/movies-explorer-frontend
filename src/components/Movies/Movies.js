@@ -43,7 +43,7 @@ function Movies({ isLoggedIn }) {
         if (savedShortFilmChecked) {
           setShortFilmChecked(savedShortFilmChecked);
         }
-      
+
         if (savedFilteredMoviesData) {
           setFilteredMoviesData(JSON.parse(savedFilteredMoviesData));
         }
@@ -59,11 +59,11 @@ function Movies({ isLoggedIn }) {
 
   const filterMovies = (data, shortFilmChecked) => {
     let filteredData = [...data];
-  
+
     if (shortFilmChecked) {
       filteredData = filteredData.filter(movie => movie.duration <= 40);
     }
-  
+
     if (searchTextRef.current.trim() !== '') {
       const searchTerm = searchTextRef.current.toLowerCase();
       filteredData = filteredData.filter(movie =>
@@ -72,10 +72,10 @@ function Movies({ isLoggedIn }) {
     }
 
     return filteredData;
-  };  
+  };
 
   const handleSearchSubmit = (searchText) => {
-    searchTextRef.current = localStorage.getItem('searchText').toLowerCase();;
+    searchTextRef.current = localStorage.getItem('searchText').toLowerCase();
     setIsLoading(true);
     setError(null);
     setDisplayedCards(maxAllowedCardsDisplay());
@@ -97,7 +97,7 @@ function Movies({ isLoggedIn }) {
     moviesApi.getMovies(searchText)
       .then((data) => {
         let filteredData = filterMovies(data, shortFilmChecked);
-        
+
         setMoviesData(data);
         setFilteredMoviesData(filterMovies(filteredData));
 
@@ -121,8 +121,8 @@ function Movies({ isLoggedIn }) {
         setMoviesData(data);
       })
       .catch(() => {
-        setError(`Во время запроса произошла ошибка. Возможно, 
-        проблема с соединением или сервер недоступен. 
+        setError(`Во время запроса произошла ошибка. Возможно,
+        проблема с соединением или сервер недоступен.
         Подождите немного и попробуйте ещё раз.`);
       })
       .finally(() => {
@@ -192,7 +192,7 @@ function Movies({ isLoggedIn }) {
         setError(null);
       }
     }
-    
+
     localStorage.setItem('shortFilmChecked', isChecked);
   };
 
@@ -242,9 +242,9 @@ function Movies({ isLoggedIn }) {
     <>
     	<Header isLoggedIn={isLoggedIn}/>
       <main className='movies'>
-			  <SearchForm 
+			  <SearchForm
           isLoggedIn={isLoggedIn}
-          onSearchSubmit={handleSearchSubmit} 
+          onSearchSubmit={handleSearchSubmit}
           shortFilmChecked={shortFilmChecked}
           setShortFilmChecked={setShortFilmChecked}
           onCheckboxChange={handleCheckboxChange}
@@ -255,9 +255,9 @@ function Movies({ isLoggedIn }) {
         ) : error ? (
           <p className='movies__error-text'>{error}</p>
         ) : (
-          <MoviesCardList 
-            moviesData={filteredMoviesData.slice(0, displayedCards)} 
-            savedMovies={savedMovies} 
+          <MoviesCardList
+            moviesData={filteredMoviesData.slice(0, displayedCards)}
+            savedMovies={savedMovies}
             onSaveMovie={handleAddToSavedMovies}
             onDeleteSavedMovie={handleRemoveFromSavedMovies}
             selectedMovieId={selectedMovieId}
