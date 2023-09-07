@@ -1,47 +1,101 @@
 import React, { useState } from 'react';
-import './Navigation.css';
-import logo from '../../images/logo.svg';
 import { Link, NavLink } from 'react-router-dom';
-import openMenu from '../../images/navigation__btn-burger.svg';
-import closeMenu from '../../images/navigation__btn-burger-close.svg';
 
-function Navigation() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+function Navigation({ loggedIn }) {
+  const [isMenuOpen, setMenuOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  function toggleMenu() {
+    setMenuOpen(!isMenuOpen);
+  }
 
-  return (
-    <nav className='navigation'>
-      <div className='navigation__container'>
-        <Link to='/'>
-          <img src={logo} className='navigation__logo' alt='логотип' />
-        </Link>
-        <div className={`navigation__menu ${isMenuOpen ? 'navigation__menu_open' : ''}`}>
-          <div className='navigation__align'>
-            {isMenuOpen && <NavLink to='/' className={({isActive}) => isActive ? "navigation__active" : "navigation__link" }>
-              Главная
-            </NavLink> }
-            <NavLink to='/movies' className={({isActive}) => isActive ? "navigation__active" : "navigation__link" }>
-              Фильмы
-            </NavLink>
-            <NavLink to='/saved-movies' className={({isActive}) => isActive ? "navigation__active" : "navigation__link" }>
-              Сохранённые фильмы
-            </NavLink>
-          </div>
-          <Link to='/profile' className='navigation__btn-accaunt'>
-            Аккаунт
+  const mainPage = (
+    <nav className="navigation navigation_main">
+      <ul className="navigation__list">
+        <li className="navigation__elem">
+          <Link
+            className="navigation__link navigation__link_main link-hover"
+            to="/signup"
+          >
+            Регистрация
           </Link>
-        </div>
-        <button className={`navigation__burger ${isMenuOpen ? 'navigation__burger_open' : ''}`} aria-label='меню' onClick={toggleMenu} type='button'>
-          {isMenuOpen ? <img className='navigation__btn-burger-close' alt='закрыть меню' src={closeMenu} /> : 
-          <img className="navigation__btn-burger" alt='открыть меню' src={openMenu} />}
-        </button>
-        <div className={`navigation__overlay ${isMenuOpen ? 'navigation__overlay_open' : ''}`} onClick={toggleMenu}></div>
-      </div>
+        </li>
+        <li className="navigation__elem">
+          <Link
+            className="navigation__link navigation__btn navigation__link_main link-hover"
+            to="/signin"
+          >
+            Войти
+          </Link>
+        </li>
+      </ul>
     </nav>
   );
+
+  const loggenInPage = (
+    <nav className="navigation">
+      <button
+        className={`navigation__burger-icon ${
+          isMenuOpen ? "navigation__burger-icon_open" : ""
+        } link-hover`}
+        type="button"
+        onClick={toggleMenu}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul className="navigation__container">
+        <li className="navigation__elem navigation__elem_burger">
+          <NavLink
+            className={({ isActive }) =>
+              `navigation__link ${
+                isActive ? "navigation__link_active" : ""
+              } link-hover`
+            }
+            to="/"
+          >
+            Главная
+          </NavLink>
+        </li>
+        <li className="navigation__elem">
+          <NavLink
+            className={({ isActive }) =>
+              `navigation__link ${
+                isActive ? "navigation__link_active" : ""
+              } link-hover`
+            }
+            to="/movies"
+          >
+            Фильмы
+          </NavLink>
+        </li>
+        <li className="navigation__elem">
+          <NavLink
+            className={({ isActive }) =>
+              `navigation__link ${
+                isActive ? "navigation__link_active" : ""
+              } link-hover`
+            }
+            to="/saved-movies"
+          >
+            Сохранённые фильмы
+          </NavLink>
+        </li>
+        <li className="navigation__btn navigation__btn_logged">
+          <Link
+            className="navigation__link navigation__link_logged link-hover"
+            to="/profile"
+          >
+            Аккаунт
+          </Link>
+        </li>
+      </ul>
+    </nav>
+  );
+
+  return loggedIn ? loggenInPage :  mainPage;
+
 }
 
 export default Navigation;

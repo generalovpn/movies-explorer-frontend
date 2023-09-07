@@ -1,6 +1,5 @@
 import React from 'react';
 import './Portfolio.css';
-import follow from '../../images/follow.svg';
 
 function Portfolio() {
   return (
@@ -8,21 +7,21 @@ function Portfolio() {
       <h2 className='portfolio__title'>Портфолио</h2>
       <ul className='portfolio__list'>
         <li className='portfolio__item'>
-          <a className='portfolio__link' href='https://github.com/generalovpn/how-to-learn' target='_blank' rel='noopener noreferrer'>
+          <a className='portfolio__link' href='https://github.com/generalovpn/how-to-learn'>
             Статичный сайт
-            <img className='portfolio__follow' src={follow} alt='Ссылка на статичный сайт'/>
+            <p className='portfolio__follow'>↗</p>
           </a>
         </li>
         <li className='portfolio__item'>
-          <a className='portfolio__link' href='https://github.com/generalovpn/russian-travel' target='_blank' rel='noopener noreferrer'>
+          <a className='portfolio__link' href='https://github.com/generalovpn/russian-travel'>
             Адаптивный сайт
-            <img className='portfolio__follow' src={follow} alt='Ссылка на адаптивный сайт'/>
+            <p className='portfolio__follow'>↗</p>
           </a>
         </li>
         <li className='portfolio__item'>
-          <a className='portfolio__link' href='https://github.com/generalovpn/react-mesto-api-full-gha' target='_blank' rel='noopener noreferrer'>
+          <a className='portfolio__link' href='https://github.com/generalovpn/react-mesto-api-full-gha'>
             Одностраничное приложение
-            <img className='portfolio__follow' src={follow} alt='Ссылка на одностраничное приложение'/>
+            <p className='portfolio__follow'>↗</p>
           </a>
         </li>
     </ul>

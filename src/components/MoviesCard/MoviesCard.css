@@ -1,126 +1,136 @@
-.movie {
-  background-color: inherit;
-  position: relative;
-}
-
-.movie__image {
-  width: 100%;
-  height: 201px;
-  border-radius: 6px;
-  aspect-ratio: 1/1;
-  display: block;
-  object-fit: cover;
-  object-position: center;
-  margin-bottom: 14px;
-}
-
-.movie__align {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 14px;
-}
-
-.movie__title {
+.card {
   margin: 0;
-  max-width: 250px;
-  font-weight: 500;
-  font-size: 13px;
+  padding: 0;
+  border-radius: 6px;
+  background-color: rgba(34, 34, 34, 1);
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 364px;
+  transition: all .3;
+}
+
+.card__img {
+  display: flex;
+  max-width: 100%;
+  height: 203px;
+  object-position: center;
+  object-fit: cover;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.card__container {
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.card__title {
+  margin: 0;
+  padding: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  font-size: 13px;
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  max-width: 290px;
+  max-height: 16px;
 }
 
-.movie__time {
-  min-width: 52px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 10px;
-  border-radius: 3px;
-  background-color: #2F2F2F;
-  color: #8B8B8B
-}
-
-.movie__btn-save {
-  display: none;
-}
-
-.movie:hover .movie__btn-save {
-  padding: 0;
-  display: flex;
-  background-color: initial;
-  border: none;
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  cursor: pointer;
-}
-
-.movie__btn-saved {
-  padding: 0;
-  width: 21px;
-  height: 21px;
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  border: none;
-  background-color: initial;
-  cursor: pointer;
-}
-
-.movie__btn-delete {
-  display: none;
-}
-
-.movie:hover .movie__btn-delete {
-  padding: 0;
-  display: flex;
-  background-color: initial;
-  border: none;
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  cursor: pointer;
-}
-
-.movie__btn-delete:hover {
-  opacity: 0.8;
-}
-
-.movie__btn-save:hover {
-  opacity: 0.8;
-}
-
-.movie__btn-saved:hover {
-  opacity: 0.8;
-}
-
-.movie__error-message {
+.card__like {
   margin: 0;
-  margin-top: 10px;
-  color: #EE3465;
-  font-size: 10px;
-  text-align: center;
+  padding: 0;
+  border: none;
+  width: 15px;
+  background-image: url("../../images/like-inactive.svg");
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  box-sizing: content-box;
+  cursor: pointer;
 }
 
-@media screen and (max-width: 768px) {
-  .movie__image {
-    margin-bottom: 25px;
+.card__like_active {
+  background-image: url("../../images/like-active.svg");
+}
+
+.card__delete {
+  margin: 0;
+  padding: 0;
+  border: none;
+  width: 15px;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  box-sizing: content-box;
+  cursor: pointer;
+}
+
+
+.card:hover .card__delete_active {
+  background-image: url("../../images/delete.svg");
+}
+
+.card__duration {
+  margin: 0 16px 16px;
+  padding: 0;
+  font-size: 11px;
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  color: rgba(139, 139, 139, 1);
+}
+
+
+
+@media screen and (max-width: 950px) {
+  .card {
+    max-width: 339px;
+  }
+
+  .card__container {
+    padding: 12px 12px 13px;
+  }
+
+  .card__duration {
+    margin: 0 14px 14px;
+  }
+
+  .card__img {
     height: 190px;
   }
-
-  .movie__align {
-    padding: 0;
-  }
 }
 
-@media screen and (max-width: 540px) {
-  .movie__image {
-    margin-bottom: 16px;
+@media screen and (max-width: 500px) {
+  .card {
+    max-width: 300px;
+  }
+
+  .card__title {
+    font-size: 12px;
+    max-width: 240px;
+  }
+
+  .card__duration {
+    font-size: 10px;
+  }
+
+  .card__img {
     height: 168px;
+  }
+
+  .card__container {
+    padding: 13px 15px 15px;
+  }
+
+  .card__duration {
+    margin: 0 14px 15px;
   }
 }

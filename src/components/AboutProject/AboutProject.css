@@ -14,17 +14,17 @@
   border-bottom: solid 1px #DADADA;
 }
 
-.about-project__info {
+.about-project__list {
   display: flex;
   justify-content: space-between;
   margin: 70px 0 110px;
 }
 
-.about-project__steps {
+.about-project__list-stage {
   max-width: 550px;
 }
 
-.about-project__subtitle {
+.about-project__stage-title {
   font-weight: 400;
   font-size: 19px;
   margin: 0;
@@ -32,7 +32,7 @@
   min-height: 24px;
 }
 
-.about-project__text {
+.about-project__stage-subtitle {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -40,7 +40,7 @@
   min-height: 40px;
 }
 
-.about-project__timetable {
+.about-project__table {
   display: flex;
   min-height: 67px;
 }
@@ -54,7 +54,7 @@
   align-items: center;
 }
 
-.about-project__step-one {
+.about-project__stage-one {
   margin: 0;
   font-weight: 400;
   font-size: 14px;
@@ -72,7 +72,7 @@
   align-items: center;
 }
 
-.about-project__step-two {
+.about-project__stage-two {
   margin: 0;
   font-weight: 400;
   font-size: 14px;
@@ -80,7 +80,7 @@
   padding-bottom: 24px;
 }
 
-.about-project__step-text {
+.about-project__stage-text {
   margin: 0;
   font-weight: 500;
   font-size: 14px;
@@ -93,7 +93,7 @@
     padding: 90px 50px;
   }
 
-  .about-project__info {
+  .about-project__list {
     margin-bottom: 93px;
   }
 
@@ -122,17 +122,17 @@
     flex-direction: column;
   }
 
-  .about-project__subtitle {
+  .about-project__stage-title {
     font-size: 17px;
     margin-bottom: 19px;
   }
 
-  .about-project__text {
+  .about-project__stage-subtitle {
     font-size: 11px;
     line-height: 16px;
   }
 
-  .about-project__steps:not(:last-child) {
+  .about-project__list-stage:not(:last-child) {
     margin-bottom: 60px;
   }
 
@@ -141,17 +141,17 @@
     height: 34px;
   }
 
-  .about-project__step-one {
+  .about-project__stage-one {
     font-size: 11px;
     padding-bottom: 19px;
   }
 
-  .about-project__step-two {
+  .about-project__stage-two {
     font-size: 11px;
     padding-bottom: 19px;
   }
 
-  .about-project__step-text {
+  .about-project__stage-text {
     font-size: 11px;
   }
 

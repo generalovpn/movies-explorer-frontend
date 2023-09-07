@@ -1,134 +1,122 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './SavedMovies.css';
-import Header from '../Header/Header';
-import SearchForm from '../SearchForm/SearchForm';
-import MoviesCardListSaved from '../MoviesCardListSaved/MoviesCardListSaved';
-import Footer from '../Footer/Footer';
-import Preloader from '../Preloader/Preloader';
-import { mainApi } from '../../utils';
+import React, { useEffect, useState } from "react";
+import MoviesCardList from "../MoviesCardList/MoviesCardList";
+import SearchForm from "../SearchForm/SearchForm";
+import { useFormWithValidation } from "../../hooks/useFormWithValidation";
+import { SHORT_FILM_MAX_DURATION } from "../../utils/constants";
 
-function SavedMovies({ isLoggedIn }) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [savedMovies, setSavedMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState([]);
-  const [shortFilmChecked, setShortFilmChecked] = useState(false);
-
-  const searchTextRef = useRef('');
+function SavedMovies({ savedMovies, handleMovieDelete, handleMovieFavorite }) {
+  const [isChecked, setChecked] = useState(false);
+  const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
+  const [isPreloader, setPreloader] = useState(false);
+  const [notFoundSearch, setNotFoundSearch] = useState(false);
+  const [isDisabledForm, setDisableForm] = useState(false);
+  const { values, handleChange, errors, isValid } = useFormWithValidation();
 
   useEffect(() => {
-    setIsLoading(true);
-
-    mainApi
-      .getInitialCards()
-        .then(savedMoviesData => {
-        setSavedMovies(savedMoviesData);
-        setFilteredMovies(savedMoviesData); 
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setError('Ошибка при получении сохраненных фильмов');
-        setIsLoading(false);
-      });
-  }, []);
-
-  const filterMovies = (data, shortFilmChecked) => {
-    let filteredData = [...data];
-  
-    if (shortFilmChecked) {
-      filteredData = filteredData.filter(movie => movie.duration <= 40);
+    if (savedMovies.length !== 0 && isChecked) {
+      filterSavedMovies();
     }
-  
-    if (searchTextRef.current.trim() !== '') {
-      const searchTerm = searchTextRef.current.toLowerCase();
-      filteredData = filteredData.filter(movie =>
-        movie.nameRU.toLowerCase().includes(searchTerm) ||
-        movie.nameEN.toLowerCase().includes(searchTerm)
-      );
-    }
-  
-    return filteredData;
-  };  
+  }, [isChecked]);
 
-  const handleSearchSubmit = (searchText) => {
-    searchTextRef.current = searchText;
-    setIsLoading(true);
-    setError(null);
-  
-    const filteredData = filterMovies(savedMovies, shortFilmChecked);
-  
-    if (searchText.trim() !== '') {
-      const searchTerm = searchText.toLowerCase();
-      const filteredByText = filteredData.filter(movie =>
-        movie.nameRU.toLowerCase().includes(searchTerm) || movie.nameEN.toLowerCase().includes(searchTerm)
-      );
-      setFilteredMovies(filteredByText);
-    } else {
-      setFilteredMovies(filteredData);
+  useEffect(() => {
+    if (savedMovies.length !== 0 && !isChecked) {
+      filterSavedMovies();
     }
+  }, [isChecked]);
 
-    if (filteredData.length === 0) {
-        setError('Ничего не найдено');
-      } else {
-        setError(null);
+  useEffect(() => {
+    filterSavedMovies();
+  }, [savedMovies]);
+
+  function filterSavedMovies() {
+    let filteredMoviesList = [];
+
+    setPreloader(true);
+    setDisableForm(true);
+    setNotFoundSearch(false);
+
+    if (values.search === undefined && !isChecked) {
+      setTimeout(() => {
+        setPreloader(false);
+        setDisableForm(false);
+      }, 500);
+
+      if (savedMovies.length === 0) return setNotFoundSearch(true);
+      else {
+        return setFilteredSavedMovies(savedMovies);
       }
-  
-    setIsLoading(false);
-  };
-  
-
-  const handleDeleteMovie = (movieId) => {
-    mainApi
-      .deleteCard(movieId)
-      .then(() => {
-        setSavedMovies(prevSavedMovies =>
-          prevSavedMovies.filter(movie => movie._id !== movieId)
-        );
-        setFilteredMovies(prevFilteredMovies =>
-          prevFilteredMovies.filter(movie => movie._id !== movieId)
-        );
-      })
-      .catch(() => {
-        setError('Ошибка при удалении сохраненного фильма');
-      });
-  };
-
-  const handleCheckboxChange = (isChecked) => {
-    const filteredData = filterMovies(savedMovies, isChecked);
-    setShortFilmChecked(isChecked);
-    setFilteredMovies(filteredData);
-    
-    if (filteredData.length === 0) {
-      setError('Ничего не найдено');
-    } else {
-      setError(null);
     }
-  };
+
+    if (values.search && isChecked) {
+      filteredMoviesList = savedMovies.filter((movie) => {
+        return (
+          movie.duration <= SHORT_FILM_MAX_DURATION &&
+          movie.nameRU
+            .toLowerCase()
+            .trim()
+            .includes(values.search.toLowerCase())
+        );
+      });
+      setFilteredSavedMovies(filteredMoviesList);
+    }
+
+    if (values.search === undefined && isChecked) {
+      filteredMoviesList = savedMovies.filter((movie) => {
+        return movie.duration <= SHORT_FILM_MAX_DURATION;
+      });
+      setFilteredSavedMovies(filteredMoviesList);
+    }
+
+    if (values.search && !isChecked) {
+      filteredMoviesList = savedMovies.filter((movie) => {
+        return movie.nameRU
+          .toLowerCase()
+          .trim()
+          .includes(values.search.toLowerCase());
+      });
+      setFilteredSavedMovies(filteredMoviesList);
+    }
+
+    if (filteredMoviesList.length === 0) {
+      setNotFoundSearch(true);
+    }
+
+    setTimeout(() => {
+      setPreloader(false);
+      setDisableForm(false);
+    }, 500);
+  }
+
+  function handleSearch(evt) {
+    evt.preventDefault();
+    filterSavedMovies();
+  }
+
+  function handleShortsClick() {
+    setChecked((isChecked) => !isChecked);
+  }
 
   return (
-    <>
-    	<Header isLoggedIn={isLoggedIn}/>
-      <main className='saved-movies'>
-			  <SearchForm 
-          onSearchSubmit={handleSearchSubmit} 
-          shortFilmChecked={shortFilmChecked}
-          setShortFilmChecked={setShortFilmChecked}
-          onCheckboxChange={handleCheckboxChange}
-        />
-        {isLoading ? (
-          <Preloader />
-        ) : error ? (
-          <p className='saved-movies__error-text'>{error}</p>
-        ) : (
-          <MoviesCardListSaved 
-            savedMovies={filteredMovies} 
-            onDeleteMovie={handleDeleteMovie} 
-            currentRoute='/saved-movies'
-          />
-        )}
-      </main>
-      <Footer />
-    </>
+    <main className="movies">
+      <SearchForm
+        filterMovies={handleSearch}
+        errors={errors}
+        handleChange={handleChange}
+        values={values}
+        isValid={isValid}
+        isChecked={isChecked}
+        isDisabledForm={isDisabledForm}
+        handleShortsClick={handleShortsClick}
+      />
+      <MoviesCardList
+        filteredMovies={filteredSavedMovies}
+        savedMovies={savedMovies}
+        isPreloader={isPreloader}
+        notFoundSearch={notFoundSearch}
+        handleMovieDelete={handleMovieDelete}
+        handleMovieFavorite={handleMovieFavorite}
+      />
+    </main>
   );
 }
 
