@@ -3,6 +3,6 @@
 
 Макет dark-2
 
-Ссылка на пул реквест - http://movies.generalovpn.nomoreparties.sbs
+Ссылка на пул реквест - https://github.com/generalovpn/movies-explorer-frontend/pull/4
 
 Ссылка на проект - http://movies.generalovpn.nomoreparties.sbs
