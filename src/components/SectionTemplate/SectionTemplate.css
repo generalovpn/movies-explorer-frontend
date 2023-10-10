@@ -1,0 +1,89 @@
+.section {
+  max-width: 1280px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 110px 70px 100px;
+  background: #202020;
+}
+
+.section__title {
+  max-width: 1140px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.88px;
+  padding-bottom: 24px;
+  color: #FFF;
+  border-bottom: solid 1px #DADADA;
+}
+
+.section_name_tech {
+  background: #272727;
+  padding-bottom: 0;
+}
+
+@media screen and (max-width: 1279px) {
+  .section {
+    padding: 90px 50px;
+  }
+
+  .section::after {
+    top: 142px;
+    width: calc(100% - 100px);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .section__title {
+    margin-top: 0;
+  }
+
+  .section_name_about {
+    padding: 90px 50px 89px;
+  }
+
+  .section_name_tech {
+    padding-bottom: 0;
+  }
+
+  .section_name_student {
+    padding-bottom: 71px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .section{
+    padding: 0;
+  }
+
+  .section__title {
+    font-size: 18px;
+    letter-spacing: -0.72px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .section {
+    max-width: 320px;
+    margin: 0;
+    padding: 70px 18px 60px;
+    background-color: #202020;
+  }
+
+  .section__title {
+    padding-bottom: 28px;
+  }
+
+  .section_name_tech {
+    background: #202020;
+    padding-bottom: 73px;
+  }
+
+  /* .section_name_about {
+    padding: 70px 18px 69px;;
+  } */
+}
