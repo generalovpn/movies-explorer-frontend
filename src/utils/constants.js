@@ -1,5 +1,6 @@
 const FILMS__URL = "https://api.nomoreparties.co/beatfilm-movies";
-const API__URL = "http://localhost:3000";
+const API__URL = "https://api.movies.generalovpn.nomoreparties.sbs";
+// const API__URL = "http://localhost:3000";
 const IMG__URL = "https://api.nomoreparties.co/";
 const ROUTE__LINKS = [
   "/movies",

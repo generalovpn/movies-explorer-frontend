@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-
 import MainPage from "../MainPage/MainPage";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
@@ -8,7 +7,6 @@ import Profile from "../Profile/Profile";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
-
 import ProtectedRoute from "../ProtetedRoute";
 import IsLogginedProtectedRoute from "../IsLogginedProtectedRoute";
 
