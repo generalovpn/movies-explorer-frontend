@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CheckBox = ({isShorts, setIsShorts, isShortsHandler}) => {
+const CheckBox = ({isShorts, isShortsHandler}) => {
   return (
     <>
     
@@ -12,7 +12,7 @@ const CheckBox = ({isShorts, setIsShorts, isShortsHandler}) => {
           className="search__checkbox"
           name="checkbox"
           checked={isShorts}
-          onChange={() => isShortsHandler(setIsShorts, isShorts)}
+          onChange={isShortsHandler}
         />
         <span className="search__checkbox-toggle" />
         Короткометражки

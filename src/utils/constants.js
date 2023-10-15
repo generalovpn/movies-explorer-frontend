@@ -1,6 +1,6 @@
+// const API__URL = "https://api.movies.generalovpn.nomoreparties.sbs";
 const FILMS__URL = "https://api.nomoreparties.co/beatfilm-movies";
-const API__URL = "https://api.movies.generalovpn.nomoreparties.sbs";
-// const API__URL = "http://localhost:3000";
+const API__URL = "http://localhost:3000";
 const IMG__URL = "https://api.nomoreparties.co/";
 const ROUTE__LINKS = [
   "/movies",
@@ -35,6 +35,13 @@ const REGEX = {
   JWT_PATTERN: /^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/,
 };
 
+// l - larget, m - mid, s - small
+const L_CARDS_QTY = 12
+const M_CARDS_QTY = 8
+const S_CARDS_QTY = 5
+const L_CARDS_ADD = 3
+const MS_CARDS_ADD = 2
+
 export {
   API__URL,
   IMG__URL,
@@ -44,4 +51,9 @@ export {
   ROUTE__LINKS,
   AUTHENTICATION__ERR,
   FORM__ERR,
+  L_CARDS_ADD,
+  MS_CARDS_ADD,
+  S_CARDS_QTY,
+  L_CARDS_QTY,
+  M_CARDS_QTY
 };

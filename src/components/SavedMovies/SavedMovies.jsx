@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-// import PropTypes from 'prop-types';
 import "./SavedMovies.css";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -47,6 +46,7 @@ function SavedMovies({ savedFilms, handleMovieButton }) {
           searchHandle={searchHandle}
           isShorts={isShorts}
           isShortsHandler={isShortsHandler}
+          search
         />
         <section className="saved-movies">
           <MoviesCardList

@@ -11,11 +11,11 @@ const setLocalStorageData = (key, newData) => {
 const getLocalStorageData = (key) => JSON.parse(localStorage.getItem(key));
 
 const toggleHandler = (setToggle, isToggle) => {
-      setToggle(!isToggle);
-      setLocalStorageData('lastSearchDataLocalStorage', {
-        lastIsShortsOnly: !isToggle,
-      });
-    };
+  setToggle(!isToggle);
+  setLocalStorageData('lastSearchDataLocalStorage', {
+    lastIsShortsOnly: !isToggle,
+  });
+};
 
 export {
   setLocalStorageData,

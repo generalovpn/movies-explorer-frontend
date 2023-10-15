@@ -49,6 +49,8 @@ function Movies({
     lastIsShortsOnly: false,
   });
 
+  const [isInputDisable, setisInputDisable] = useState(false);
+
   useEffect(() => {
     setIsShorts(lastSearchData.lastIsShortsOnly);
     if (lastSearchData.lastFindedMovies.length) {
@@ -79,6 +81,7 @@ function Movies({
   }, [location]);
 
   const searchInAllMovies = (searchRequest) => {
+    setisInputDisable(true);
     if (allMoviesFromMoviesServer.length === 0) {
       setIsLoading(true);
       getMovies()
@@ -94,13 +97,17 @@ function Movies({
           setIsMessage(ERROR_MESSAGES.REQUEST_FAILURE);
           console.log(err);
         })
-        .finally(() => setIsLoading(false));
+        .finally(() => {
+          setIsLoading(false);
+          setisInputDisable(false)
+        });
     } else {
       makeSearch(searchRequest, allMoviesFromMoviesServer);
       setLocalStorageData("lastSearchDataLocalStorage", {
         lastSearchRequest: searchRequest,
         lastFindedMovies: allMoviesFromMoviesServer,
       });
+      setisInputDisable(false);
     }
   };
   useEffect(() => {
@@ -126,7 +133,7 @@ function Movies({
           isShorts={isShorts}
           setIsShorts={setIsShorts}
           isShortsHandler={toggleHandler}
-          lastSearchRequest={lastSearchData.lastSearchRequest}
+          isInputDisable={isInputDisable}
         />
         <section className="movies">
           {isLoading ? (

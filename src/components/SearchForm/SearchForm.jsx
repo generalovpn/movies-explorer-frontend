@@ -12,12 +12,19 @@ function SearchForm({
   setIsShorts,
   isShortsHandler,
   setResetMoviesSearch,
-  lastRequestSearch,
+  isInputDisable,
+  search,
 }) {
+  const getFromLocal = search
+    ? ""
+    : JSON.parse(localStorage.getItem("lastSearchDataLocalStorage"))
+        ?.lastSearchRequest || "";
   const { form, handleChange, handleFocus, isActiveInput, setForm } = useForm({
-    search: lastRequestSearch,
+    search: getFromLocal,
     searchError: "",
   });
+
+  console.log(isInputDisable, 'this is condition in searchForm')
 
   const [searchError, setSearchError] = useState("");
 
@@ -33,13 +40,18 @@ function SearchForm({
   };
 
   useEffect(() => {
-    setForm({ search: lastRequestSearch });
-  }, [lastRequestSearch]);
+    setForm({ search: getFromLocal });
+  }, [getFromLocal]);
 
   useEffect(() => {
     if (isActiveInput.name && form.search === "") setResetMoviesSearch(true);
     else setResetMoviesSearch(false);
   }, [form.search]);
+
+  const togHandler = () => {
+    searchHandle(form.search);
+    isShortsHandler(setIsShorts, isShorts);
+  };
 
   return (
     <section className="search">
@@ -49,13 +61,10 @@ function SearchForm({
           handleChange={handleChange}
           handleFocus={handleFocus}
           searchError={searchError}
+          isInputDisable={isInputDisable}
         />
       </form>
-      <CheckBox
-        isShorts={isShorts}
-        setIsShorts={setIsShorts}
-        isShortsHandler={isShortsHandler}
-      />
+      <CheckBox isShorts={isShorts} isShortsHandler={togHandler} />
     </section>
   );
 }

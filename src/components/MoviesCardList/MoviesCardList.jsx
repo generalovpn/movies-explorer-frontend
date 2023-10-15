@@ -3,53 +3,50 @@ import { useLocation } from "react-router-dom";
 import "./MoviesCardList.css";
 
 import ShowMovies from "./ShowMovies";
+import { useWindowSize } from "../../hooks/useWindowSize";
+
+import {
+  L_CARDS_ADD,
+  MS_CARDS_ADD,
+  S_CARDS_QTY,
+  L_CARDS_QTY,
+  M_CARDS_QTY,
+} from "../../utils/constants";
 
 function MoviesCardList({ moviesArray, searchMessage, handleMovieButton }) {
   const location = useLocation();
   const isMovies = location.pathname === "/movies";
   const [visibleMovies, setVisibleMovies] = useState(3);
   const [displayState, setDisplayState] = useState("large");
+  const { width } = useWindowSize();
 
   useEffect(() => {
-    let timeout;
-    const handleResize = () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        if (window.innerWidth < 767) {
-          setDisplayState("small");
-        } else if (window.innerWidth >= 768 && window.innerWidth <= 1279) {
-          setDisplayState("middle");
-        } else {
-          setDisplayState("large");
-        }
-      }, 100);
-    };
-
-    window.addEventListener("resize", handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+    if (width < 767) {
+      setDisplayState("small");
+    } else if (width >= 768 && width <= 1279) {
+      setDisplayState("middle");
+    } else {
+      setDisplayState("large");
+    }
+  }, [width]);
 
   useEffect(() => {
     if (!isMovies) {
       setVisibleMovies(moviesArray.length);
     } else {
       const displayStateConfig = {
-        middle: 8,
-        large: 12,
-        default: 5,
+        middle: M_CARDS_QTY,
+        large: L_CARDS_QTY,
+        default: S_CARDS_QTY,
       };
       setVisibleMovies(
         displayStateConfig[displayState] || displayStateConfig.default
       );
     }
-  }, [displayState]);
+  }, [displayState, moviesArray]);
 
   const handleAddMovies = () => {
-    const moreMovies = displayState === "large" ? 3 : 2;
+    const moreMovies = displayState === "large" ? L_CARDS_ADD : MS_CARDS_ADD;
     setVisibleMovies((prevDisplayedMovies) => prevDisplayedMovies + moreMovies);
   };
 

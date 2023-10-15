@@ -4,8 +4,9 @@ import CurrentUserContext from '../contexts/CurrentUserContext';
 
 function ProtectedRoute({ component: Component, ...props }) {
   const currentUser = React.useContext(CurrentUserContext);
+
   if (!currentUser.isLoggedIn) {
-    return <Navigate to="/" />;
+    return <Navigate to="" />;
   }
   return <Component {...props} />;
 }

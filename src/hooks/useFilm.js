@@ -37,15 +37,13 @@ function useFilm(currentUser) {
     if (currentUser.isLoggedIn) {
       mainApi.getSavedMovies()
         .then((res) => {
-          if (res && res.data && res.data.length > 0) {
-            setSavedFilms(res.data);
-          }
+            return setSavedFilms(res.data);
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, []);
+  }, [currentUser.isLoggedIn]);
 
   return {
     savedFilms,

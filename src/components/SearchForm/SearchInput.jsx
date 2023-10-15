@@ -1,6 +1,6 @@
 import React from "react";
 
-const SearchInput = ({form, handleChange, handleFocus, searchError}) => {
+const SearchInput = ({form, handleChange, handleFocus, searchError, isInputDisable}) => {
   return (
     <>
       <label className="search__label">
@@ -13,6 +13,7 @@ const SearchInput = ({form, handleChange, handleFocus, searchError}) => {
           value={form.search}
           onChange={handleChange}
           onFocus={handleFocus}
+          disabled={isInputDisable}
         />
         <span className="search__error">{searchError}</span>
       </label>
