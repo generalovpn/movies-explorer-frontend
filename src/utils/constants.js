@@ -42,6 +42,8 @@ const S_CARDS_QTY = 5
 const L_CARDS_ADD = 3
 const MS_CARDS_ADD = 2
 
+const SHORT_MOVIE = 40;
+
 export {
   API__URL,
   IMG__URL,
@@ -55,5 +57,6 @@ export {
   MS_CARDS_ADD,
   S_CARDS_QTY,
   L_CARDS_QTY,
-  M_CARDS_QTY
+  M_CARDS_QTY,
+  SHORT_MOVIE
 };

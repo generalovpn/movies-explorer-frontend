@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { IMG__URL, ERROR_MESSAGES } from "../utils/constants";
 import CurrentUserContext from "../contexts/CurrentUserContext";
+import  { SHORT_MOVIE } from "../utils/constants";
 
 const useSearch = () => {
   const currentUser = React.useContext(CurrentUserContext);
@@ -59,17 +60,21 @@ const useSearch = () => {
     const wordsList = req.toLowerCase().match(/[а-яё]{1,}|[a-z]{1,}/g);
     const wordsListUniqObj = Array.from(new Set(wordsList));
 
+    // function countFields(movie, word) {
+    //   let count = 0;
+    //   Object.keys(movie).forEach((prop) => {
+    //     if (
+    //       typeof movie[prop] === "string" &&
+    //       movie[prop].toLowerCase().includes(word)
+    //     ) {
+    //       count += 1;
+    //     }
+    //   });
+    //   return count;
+    // }
+
     function countFields(movie, word) {
-      let count = 0;
-      Object.keys(movie).forEach((prop) => {
-        if (
-          typeof movie[prop] === "string" &&
-          movie[prop].toLowerCase().includes(word)
-        ) {
-          count += 1;
-        }
-      });
-      return count;
+      return (movie.nameRU.toLowerCase().includes(word) || movie.nameEN.toLowerCase().includes(word)) ? 1 : 0;
     }
 
     const resultMoviesRangeArray = arr.map((movie) => {
@@ -103,7 +108,7 @@ const useSearch = () => {
     setOriginalSearchResults(searchResult);
 
     if (isShorts) {
-      searchResult = searchResult.filter((movie) => movie.duration <= 40);
+      searchResult = searchResult.filter((movie) => movie.duration <= SHORT_MOVIE);
     }
 
     if (searchResult.length === 0) {
@@ -118,7 +123,7 @@ const useSearch = () => {
   useEffect(() => {
     let updatedResults = [...originalSearchResults];
     if (isShorts) {
-      updatedResults = updatedResults.filter((movie) => movie.duration <= 40);
+      updatedResults = updatedResults.filter((movie) => movie.duration <= SHORT_MOVIE);
     }
 
     if (updatedResults.length === 0) {
